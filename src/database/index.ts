@@ -12,6 +12,10 @@ mongoose
     logger.error(e);
   });
 
+mongoose.connection.on("connected", () => {
+  logger.debug("Mongoose connection open");
+});
+
 mongoose.connection.on("error", (err) => {
   logger.error("Mongoose connection error: " + err);
 });

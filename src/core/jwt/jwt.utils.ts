@@ -6,17 +6,31 @@ import InternalError from "../error/internal.error";
 
 export default class JWT {
   public static async createTokens(
-    user: User
+    user: User,
+    accessTokenKey: string,
+    refreshTokenKey: string
   ): Promise<{accessToken: string; refreshToken: string}> {
-    const payload = new JwtPayload(user._id, user.username, user.email);
+    const accessPayload = new JwtPayload(
+      user._id,
+      user.username,
+      user.email,
+      accessTokenKey
+    );
 
-    const accessToken = await sign({...payload}, tokenInfo.secret, {
+    const accessToken = await sign({...accessPayload}, tokenInfo.secret, {
       expiresIn: tokenInfo.accessTokenValidity,
     });
 
     if (!accessToken) throw new InternalError();
 
-    const refreshToken = await sign({...payload}, tokenInfo.secret, {
+    const refreshPayload = new JwtPayload(
+      user._id,
+      user.username,
+      user.email,
+      refreshTokenKey
+    );
+
+    const refreshToken = await sign({...refreshPayload}, tokenInfo.secret, {
       expiresIn: tokenInfo.refreshTokenValidity,
     });
 
