@@ -4,6 +4,8 @@ import signup from "./routes/signup";
 import validationMiddleware from "../../middlewares/validation.middleware";
 import schema from "./schema";
 import login from "./routes/login";
+import refresh from "./routes/refresh";
+import authenticationMiddleware from "../../middlewares/authentication.middleware";
 
 const authRouter = express.Router();
 
@@ -16,6 +18,12 @@ authRouter.post(
   "/login",
   validationMiddleware(schema.login),
   asyncHandlerHelper(login)
+);
+authRouter.post(
+  "/refresh",
+  authenticationMiddleware,
+  validationMiddleware(schema.refreshToken),
+  asyncHandlerHelper(refresh)
 );
 
 export default authRouter;

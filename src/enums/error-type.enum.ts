@@ -7,6 +7,7 @@ enum ErrorType {
   NO_ENTRY = "NoEntryError",
   BAD_REQUEST = "BadRequestError",
   FORBIDDEN = "ForbiddenError",
+  BAD_TOKEN = "BadTokenError",
 }
 
 export default ErrorType;

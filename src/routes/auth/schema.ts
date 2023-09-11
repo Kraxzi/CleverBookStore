@@ -10,4 +10,7 @@ export default {
     email: Joi.string().required().min(5),
     password: Joi.string().required().min(8),
   }),
+  refreshToken: Joi.object().keys({
+    refreshToken: Joi.string().required().min(1),
+  }),
 };

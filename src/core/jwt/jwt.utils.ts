@@ -7,6 +7,7 @@ import AuthFailureError from "../error/auth-failure.error";
 import logger from "../logger";
 import TokenExpiredError from "../error/token-expired.error";
 import {Types} from "mongoose";
+import BadTokenError from "../error/bad-token.error";
 
 export default class JWT {
   public static async createTokens(
@@ -71,5 +72,15 @@ export default class JWT {
     )
       throw new AuthFailureError("Invalid access token");
     return true;
+  }
+
+  public static async decode(token: string): Promise<JwtPayload> {
+    try {
+      const decoded = (await verify(token, tokenInfo.secret)) as JwtPayload;
+      return decoded;
+    } catch (e) {
+      logger.debug(e);
+      throw new BadTokenError();
+    }
   }
 }

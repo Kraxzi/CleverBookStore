@@ -1,5 +1,6 @@
 import Keystore, {KeystoreModel} from "../models/Keystore";
 import User from "../models/User";
+import {Types} from "mongoose";
 
 async function create(
   user: User,
@@ -29,7 +30,26 @@ async function findByPrimary(
   return keystore;
 }
 
+async function find(
+  user: User,
+  primaryKey: string,
+  secondaryKey: string
+): Promise<Keystore | null> {
+  const keystore = await KeystoreModel.findOne({
+    user,
+    primaryKey,
+    secondaryKey,
+  });
+  return keystore;
+}
+
+async function remove(id: Types.ObjectId): Promise<void> {
+  await KeystoreModel.findByIdAndRemove(id);
+}
+
 export default {
   create,
   findByPrimary,
+  find,
+  remove,
 };

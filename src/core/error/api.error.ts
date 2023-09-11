@@ -5,6 +5,7 @@ import BadRequestResponse from "../response/bad-request.response";
 import ForbiddenResponse from "../response/forbidden.response";
 import InternalErrorResponse from "../response/internal-error.response";
 import NotFoundResponse from "../response/not-found.response";
+import AccessTokenErrorResponse from "../response/access-token-error.response";
 
 export default abstract class ApiError extends Error {
   constructor(public type: ErrorType, public message: string = "error") {
@@ -13,9 +14,12 @@ export default abstract class ApiError extends Error {
 
   public static handle(err: ApiError, res: Response): Response {
     switch (err.type) {
+      case ErrorType.BAD_TOKEN:
       case ErrorType.TOKEN_EXPIRED:
       case ErrorType.UNAUTHORIZED:
         return new AuthFailureResponse(err.message).send(res);
+      case ErrorType.ACCESS_TOKEN:
+        return new AccessTokenErrorResponse(err.message).send(res);
       case ErrorType.INTERNAL:
         return new InternalErrorResponse(err.message).send(res);
       case ErrorType.NOT_FOUND:
