@@ -17,6 +17,19 @@ async function create(
   return keystore.toObject();
 }
 
+async function findByPrimary(
+  user: User,
+  key: string
+): Promise<Keystore | null> {
+  const keystore = await KeystoreModel.findOne({
+    user,
+    primaryKey: key,
+    status: true,
+  });
+  return keystore;
+}
+
 export default {
   create,
+  findByPrimary,
 };

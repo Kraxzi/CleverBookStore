@@ -13,7 +13,6 @@ export default abstract class ApiError extends Error {
 
   public static handle(err: ApiError, res: Response): Response {
     switch (err.type) {
-      case ErrorType.BAD_TOKEN:
       case ErrorType.TOKEN_EXPIRED:
       case ErrorType.UNAUTHORIZED:
         return new AuthFailureResponse(err.message).send(res);
@@ -21,7 +20,6 @@ export default abstract class ApiError extends Error {
         return new InternalErrorResponse(err.message).send(res);
       case ErrorType.NOT_FOUND:
       case ErrorType.NO_ENTRY:
-      case ErrorType.NO_DATA:
         return new NotFoundResponse(err.message).send(res);
       case ErrorType.BAD_REQUEST:
         return new BadRequestResponse(err.message).send(res);
